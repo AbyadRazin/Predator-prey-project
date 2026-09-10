@@ -17,6 +17,9 @@ public class Predator extends Actor {
     private static final int BREED_INTERVAL = 60;
     private static final int OFFSPRING_ENERGY = 60;
     private static final int MAX_PREDATOR_POPULATION = 10;
+    // Predator's sprite is bigger than one grid cell now, so its "mouth" needs
+    // to reach further than 1 cell too, or prey visually touching it won't get eaten.
+    private static final int EATING_RANGE = 2;
 
     private static BufferedImage sprite;
 
@@ -50,7 +53,7 @@ public class Predator extends Actor {
                 Prey prey = nearestPrey.get();
                 int dx = prey.getX() - getX();
                 int dy = prey.getY() - getY();
-                moveTo(getX() + Integer.signum(dx), getY() + Integer.signum(dy));
+                moveTo(getX() + Integer.signum(dx) * MOVE_SPEED, getY() + Integer.signum(dy) * MOVE_SPEED);
             } else {
                 wander();
             }
@@ -69,7 +72,7 @@ public class Predator extends Actor {
         for (int i = 0; i < actors.size(); i++) {
             Actor a = actors.get(i);
             if (a instanceof Prey && a.isAlive()) {
-                if (Math.abs(getX() - a.getX()) <= 1 && Math.abs(getY() - a.getY()) <= 1) {
+                if (Math.abs(getX() - a.getX()) <= EATING_RANGE && Math.abs(getY() - a.getY()) <= EATING_RANGE) {
                     a.changeEnergy(-a.getEnergy());
                     changeEnergy(ENERGY_PER_MEAL);
                     eatenCount++;

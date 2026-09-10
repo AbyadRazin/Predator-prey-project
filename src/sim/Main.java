@@ -10,13 +10,13 @@ import java.awt.event.ActionListener;
 
 public class Main {
 
-    private static final int GRID_WIDTH = 35;
-    private static final int GRID_HEIGHT = 25;
+    private static final int GRID_WIDTH = 50;
+    private static final int GRID_HEIGHT = 40;
     private static final int STARTING_ENERGY = 100;
 
     public static void main(String[] args) {
         int predatorCount = askForCount("How many predators to start with?", 5);
-        int preyCount = askForCount("How many prey to start with?", 15);
+        int preyCount = askForCount("How many prey to start with?", 20);
 
         World world = new World(GRID_WIDTH, GRID_HEIGHT);
 
@@ -78,8 +78,10 @@ public class Main {
     }
 
     private static void spawnRandom(World world, boolean predator) {
-        int x = world.getRandom().nextInt(world.getWidth());
-        int y = world.getRandom().nextInt(world.getHeight());
+        // Match Actor.moveTo()'s 1-block edge buffer so newly spawned fish
+        // don't start out clipped into the edge before their first move.
+        int x = 1 + world.getRandom().nextInt(world.getWidth() - 2);
+        int y = 1 + world.getRandom().nextInt(world.getHeight() - 2);
         try {
             if (predator) {
                 world.spawnActor(new Predator(world, x, y, STARTING_ENERGY));

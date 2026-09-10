@@ -6,6 +6,7 @@ public abstract class Actor implements Drawable {
 
     private static final int Emax = 200;
     private static final int Emin = 0;
+    protected static final int MOVE_SPEED = 2;
 
     protected final World world;
     private int x;
@@ -66,30 +67,37 @@ public abstract class Actor implements Drawable {
     }
 
     protected void moveTo(int newX, int newY) {
-        if (newX < 0) {
-            newX = 0;
+        // Keep a 1-block buffer from the true edge so the (much bigger) sprite
+        // never gets visually clipped by the edge of the window.
+        int minX = 1;
+        int maxX = world.getWidth() - 2;
+        int minY = 1;
+        int maxY = world.getHeight() - 2;
+
+        if (newX < minX) {
+            newX = minX;
         }
-        if (newX >= world.getWidth()) {
-            newX = world.getWidth() - 1;
+        if (newX > maxX) {
+            newX = maxX;
         }
-        if (newY < 0) {
-            newY = 0;
+        if (newY < minY) {
+            newY = minY;
         }
-        if (newY >= world.getHeight()) {
-            newY = world.getHeight() - 1;
+        if (newY > maxY) {
+            newY = maxY;
         }
         x = newX;
         y = newY;
     }
 
     protected void wander() {
-        int dx = 0;
-        int dy = 0;
-        while (dx == 0 && dy == 0) {
-            dx = world.getRandom().nextInt(3) - 1;
-            dy = world.getRandom().nextInt(3) - 1;
+        int dirX = 0;
+        int dirY = 0;
+        while (dirX == 0 && dirY == 0) {
+            dirX = world.getRandom().nextInt(3) - 1;
+            dirY = world.getRandom().nextInt(3) - 1;
         }
-        moveTo(x + dx, y + dy);
+        moveTo(x + dirX * MOVE_SPEED, y + dirY * MOVE_SPEED);
     }
 
     public abstract void update();

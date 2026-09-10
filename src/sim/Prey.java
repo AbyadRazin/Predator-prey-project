@@ -12,7 +12,7 @@ public class Prey extends Actor {
     private static final int ENERGY_GAIN_PER_TICK = 2;
     private static final int BREED_INTERVAL = 15;
     private static final int OFFSPRING_ENERGY = 50;
-    private static final int MAX_PREY_POPULATION = 35;
+    private static final int MAX_PREY_POPULATION = 60;
 
     private static BufferedImage sprite;
 
