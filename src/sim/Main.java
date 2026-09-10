@@ -10,13 +10,13 @@ import java.awt.event.ActionListener;
 
 public class Main {
 
-    private static final int GRID_WIDTH = 40;
-    private static final int GRID_HEIGHT = 30;
+    private static final int GRID_WIDTH = 35;
+    private static final int GRID_HEIGHT = 25;
     private static final int STARTING_ENERGY = 100;
 
     public static void main(String[] args) {
-        int predatorCount = askForCount("How many predators to start with?", 4);
-        int preyCount = askForCount("How many prey to start with?", 20);
+        int predatorCount = askForCount("How many predators to start with?", 5);
+        int preyCount = askForCount("How many prey to start with?", 15);
 
         World world = new World(GRID_WIDTH, GRID_HEIGHT);
 

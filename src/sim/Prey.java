@@ -1,5 +1,5 @@
 package sim;
-
+import java.util.List;
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -8,6 +8,7 @@ public class Prey extends Actor {
     private static final int ENERGY_GAIN_PER_TICK = 2;
     private static final int BREED_INTERVAL = 15;
     private static final int OFFSPRING_ENERGY = 50;
+    private static final int MAX_PREY_POPULATION = 60;
 
     private int ticksUntilBreed = BREED_INTERVAL;
 
@@ -28,6 +29,9 @@ public class Prey extends Actor {
     }
 
     private void breed() {
+        if (countPrey() >= MAX_PREY_POPULATION) {
+            return;
+        }
         int offspringX = getX() + world.getRandom().nextInt(3) - 1;
         int offspringY = getY() + world.getRandom().nextInt(3) - 1;
         try {
@@ -35,6 +39,17 @@ public class Prey extends Actor {
         } catch (InvalidPositionException e) {
             System.out.println("Skipped breeding: " + e.getMessage());
         }
+    }
+
+    private int countPrey() {
+        List<Actor> actors = world.getActors();
+        int count = 0;
+        for (int i = 0; i < actors.size(); i++) {
+            if (actors.get(i) instanceof Prey) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override

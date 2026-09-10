@@ -7,7 +7,7 @@ import java.util.Optional;
 public class Predator extends Actor {
 
     private static final int VISION_RADIUS = 6;
-    private static final int ENERGY_LOSS_PER_TICK = 1;
+    private static final int ENERGY_LOSS_PER_TICK = 3;
     private static final int ENERGY_PER_MEAL = 40;
 
     public Predator(World world, int x, int y, int startingEnergy) {
