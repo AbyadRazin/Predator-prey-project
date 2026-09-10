@@ -12,8 +12,8 @@ import java.io.IOException;
 public class Predator extends Actor {
 
     private static final int VISION_RADIUS = 6;
-    private static final int ENERGY_LOSS_PER_TICK = 3;
-    private static final int ENERGY_PER_MEAL = 30;
+    private static final int ENERGY_LOSS_PER_TICK = 5;
+    private static final int ENERGY_PER_MEAL = 20;
     private static final int BREED_INTERVAL = 60;
     private static final int OFFSPRING_ENERGY = 60;
     private static final int MAX_PREDATOR_POPULATION = 10;
