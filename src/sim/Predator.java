@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 import java.util.Optional;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class Predator extends Actor {
 
@@ -13,6 +17,17 @@ public class Predator extends Actor {
     private static final int BREED_INTERVAL = 60;
     private static final int OFFSPRING_ENERGY = 60;
     private static final int MAX_PREDATOR_POPULATION = 10;
+
+    private static BufferedImage sprite;
+
+    static {
+        try {
+            sprite = ImageIO.read(new File("assets/predator_fish.png"));
+        } catch (IOException e) {
+            System.out.println("Could not load predator sprite: " + e.getMessage());
+            sprite = null;
+        }
+    }
 
     private int ticksUntilBreed = BREED_INTERVAL;
 
@@ -75,13 +90,19 @@ public class Predator extends Actor {
     }
 
     @Override
-    public void draw(Graphics g) {
-        int size = World.CELL_SIZE;
-        int px = getX() * size;
-        int py = getY() * size;
 
-        g.setColor(Color.RED);
-        g.fillOval(px, py, size, size);
+    public void draw(Graphics g) {
+        int size = World.ACTOR_SIZE;
+        int centerOffset = (World.ACTOR_SIZE - World.CELL_SIZE) / 2;
+        int px = (int) (getDrawX() * World.CELL_SIZE) - centerOffset;
+        int py = (int) (getDrawY() * World.CELL_SIZE) - centerOffset;
+
+        if (sprite != null) {
+            g.drawImage(sprite, px, py, size, size, null);
+        } else {
+            g.setColor(Color.RED);
+            g.fillOval(px, py, size, size);
+        }
 
         int barHeight = 4;
         int barX = px;

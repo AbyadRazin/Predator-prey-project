@@ -14,7 +14,7 @@ import java.util.List;
 public class SimulationPanel extends JPanel {
 
     private static final int LOGIC_INTERVAL_MS = 400;
-    private static final int RENDER_INTERVAL_MS = 30;
+    private static final int RENDER_INTERVAL_MS = 16;
 
     private final World world;
     private boolean paused = false;

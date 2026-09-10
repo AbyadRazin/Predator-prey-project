@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class World {
     public static final int CELL_SIZE = 16;
+    public static final int ACTOR_SIZE = 24;
     private final int width;
     private final int height;
     private final List<Actor> actors;

@@ -39,7 +39,7 @@ public abstract class Actor implements Drawable {
     }
 
     public void easeDrawPosition() {
-        double easing = 0.2;
+        double easing = 0.12;
         drawX += (x - drawX) * easing;
         drawY += (y - drawY) * easing;
     }
