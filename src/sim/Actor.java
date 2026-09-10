@@ -34,6 +34,9 @@ public abstract class Actor implements Drawable {
     public boolean isAlive() {
         return energy > 0;
     }
+    public static int getMaxEnergy() {
+        return Emax;
+    }
 
     protected void changeEnergy(int E) {
         energy += E;
