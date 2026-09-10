@@ -83,8 +83,12 @@ public abstract class Actor implements Drawable {
     }
 
     protected void wander() {
-        int dx = world.getRandom().nextInt(3) - 1;
-        int dy = world.getRandom().nextInt(3) - 1;
+        int dx = 0;
+        int dy = 0;
+        while (dx == 0 && dy == 0) {
+            dx = world.getRandom().nextInt(3) - 1;
+            dy = world.getRandom().nextInt(3) - 1;
+        }
         moveTo(x + dx, y + dy);
     }
 
