@@ -41,8 +41,8 @@ public class Predator extends Actor {
     @Override
     public void draw(Graphics g) {
         int size = World.CELL_SIZE;
-        int px = getX() * size;
-        int py = getY() * size;
+        int px = (int) (getDrawX() * size);
+        int py = (int) (getDrawY() * size);
 
         g.setColor(Color.RED);
         g.fillOval(px, py, size, size);

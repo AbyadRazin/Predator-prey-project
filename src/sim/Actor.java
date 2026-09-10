@@ -11,12 +11,16 @@ public abstract class Actor implements Drawable {
     private int x;
     private int y;
     private int energy;
+    private double drawX;
+    private double drawY;
 
     public Actor(World world, int x, int y, int startingEnergy) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.energy = startingEnergy;
+        this.drawX = x;
+        this.drawY = y;
     }
 
     public int getX() {
@@ -25,6 +29,19 @@ public abstract class Actor implements Drawable {
 
     public int getY() {
         return y;
+    }
+    public double getDrawX() {
+        return drawX;
+    }
+
+    public double getDrawY() {
+        return drawY;
+    }
+
+    public void easeDrawPosition() {
+        double easing = 0.2;
+        drawX += (x - drawX) * easing;
+        drawY += (y - drawY) * easing;
     }
 
     public int getEnergy() {
