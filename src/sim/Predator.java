@@ -15,7 +15,7 @@ public class Predator extends Actor {
     private static final int ENERGY_LOSS_PER_TICK = 5;
     private static final int ENERGY_PER_MEAL = 20;
     private static final int BREED_INTERVAL = 60;
-    private static final int OFFSPRING_ENERGY = 60;
+    private static final int OFFSPRING_ENERGY = 80;
     private static final int MAX_PREDATOR_POPULATION = 10;
     // Predator's sprite is bigger than one grid cell now, so its "mouth" needs
     // to reach further than 1 cell too, or prey visually touching it won't get eaten.
