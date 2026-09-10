@@ -9,14 +9,15 @@ import java.util.Random;
 
 public class Bubble implements Drawable {
 
-    private static final int SIZE = 14;
+    private static final int MIN_SIZE = 26;
+    private static final int MAX_SIZE = 38;
     private static final double MIN_SPEED = 0.6;
     private static final double MAX_SPEED = 1.8;
 
-    private static final BufferedImage[] sprites = new BufferedImage[3];
+    private static final BufferedImage[] sprites = new BufferedImage[2];
 
     static {
-        String[] fileNames = {"assets/bubble_a.png", "assets/bubble_b.png", "assets/bubble_c.png"};
+        String[] fileNames = {"assets/bubble_a.png", "assets/bubble_c.png"};
         for (int i = 0; i < fileNames.length; i++) {
             try {
                 sprites[i] = ImageIO.read(new File(fileNames[i]));
@@ -31,6 +32,7 @@ public class Bubble implements Drawable {
     private final double x;
     private double y;
     private final double speed;
+    private final int size;
     private final BufferedImage sprite;
 
     public Bubble(int panelWidth, int panelHeight, Random random) {
@@ -38,12 +40,13 @@ public class Bubble implements Drawable {
         this.x = random.nextInt(panelWidth);
         this.y = random.nextInt(panelHeight);
         this.speed = MIN_SPEED + random.nextDouble() * (MAX_SPEED - MIN_SPEED);
+        this.size = MIN_SIZE + random.nextInt(MAX_SIZE - MIN_SIZE + 1);
         this.sprite = sprites[random.nextInt(sprites.length)];
     }
 
     public void update() {
         y -= speed;
-        if (y < -SIZE) {
+        if (y < -size) {
             y = panelHeight;
         }
     }
@@ -51,7 +54,7 @@ public class Bubble implements Drawable {
     @Override
     public void draw(Graphics g) {
         if (sprite != null) {
-            g.drawImage(sprite, (int) x, (int) y, SIZE, SIZE, null);
+            g.drawImage(sprite, (int) x, (int) y, size, size, null);
         }
     }
 }

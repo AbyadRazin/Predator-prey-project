@@ -15,6 +15,10 @@ public class Main {
     private static final int STARTING_ENERGY = 100;
 
     public static void main(String[] args) {
+        startSimulation();
+    }
+
+    private static void startSimulation() {
         int predatorCount = askForCount("How many predators to start with?", 5);
         int preyCount = askForCount("How many prey to start with?", 20);
 
@@ -47,9 +51,12 @@ public class Main {
             }
         });
 
+        JButton restartButton = new JButton("Restart");
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addPredatorButton);
         buttonPanel.add(addPreyButton);
+        buttonPanel.add(restartButton);
 
         JFrame frame = new JFrame("Predator-Prey Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +66,17 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        // Restarting just closes this window and builds a brand new one from
+        // scratch, so it works whether the game is still running or already over,
+        // and it naturally re-asks for the starting predator/prey counts.
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                startSimulation();
+            }
+        });
     }
 
     private static int askForCount(String message, int defaultValue) {
