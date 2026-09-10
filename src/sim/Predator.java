@@ -42,20 +42,18 @@ public class Predator extends Actor {
             return;
         }
 
-        Optional<Prey> nearestPrey = world.findNearest(getX(), getY(), Prey.class, VISION_RADIUS);
+        int eatenCount = eatAdjacentPrey();
 
-        if (nearestPrey.isPresent()) {
-            Prey prey = nearestPrey.get();
-            if (Math.abs(getX() - prey.getX()) <= 1 && Math.abs(getY() - prey.getY()) <= 1) {
-                prey.changeEnergy(-prey.getEnergy());
-                changeEnergy(ENERGY_PER_MEAL);
-            } else {
+        if (eatenCount == 0) {
+            Optional<Prey> nearestPrey = world.findNearest(getX(), getY(), Prey.class, VISION_RADIUS);
+            if (nearestPrey.isPresent()) {
+                Prey prey = nearestPrey.get();
                 int dx = prey.getX() - getX();
                 int dy = prey.getY() - getY();
                 moveTo(getX() + Integer.signum(dx), getY() + Integer.signum(dy));
+            } else {
+                wander();
             }
-        } else {
-            wander();
         }
 
         ticksUntilBreed--;
@@ -63,6 +61,22 @@ public class Predator extends Actor {
             breed();
             ticksUntilBreed = BREED_INTERVAL;
         }
+    }
+
+    private int eatAdjacentPrey() {
+        int eatenCount = 0;
+        List<Actor> actors = world.getActors();
+        for (int i = 0; i < actors.size(); i++) {
+            Actor a = actors.get(i);
+            if (a instanceof Prey && a.isAlive()) {
+                if (Math.abs(getX() - a.getX()) <= 1 && Math.abs(getY() - a.getY()) <= 1) {
+                    a.changeEnergy(-a.getEnergy());
+                    changeEnergy(ENERGY_PER_MEAL);
+                    eatenCount++;
+                }
+            }
+        }
+        return eatenCount;
     }
 
     private void breed() {
