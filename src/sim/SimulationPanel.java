@@ -59,10 +59,7 @@ public class SimulationPanel extends JPanel {
     private final World world;
     private final List<Bubble> bubbles = new ArrayList<>();
     private boolean paused = false;
-    private boolean gameOver = false;
-    private String winnerMessage = "";
-    private Timer logicTimer;
-    private Timer renderTimer;
+    private String winnerMessage = null;
 
     public SimulationPanel(World world) {
         this.world = world;
@@ -77,7 +74,7 @@ public class SimulationPanel extends JPanel {
 
         setupPauseKey();
 
-        logicTimer = new Timer(LOGIC_INTERVAL_MS, new ActionListener() {
+        Timer logicTimer = new Timer(LOGIC_INTERVAL_MS, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!paused) {
@@ -88,7 +85,7 @@ public class SimulationPanel extends JPanel {
         });
         logicTimer.start();
 
-        renderTimer = new Timer(RENDER_INTERVAL_MS, new ActionListener() {
+        Timer renderTimer = new Timer(RENDER_INTERVAL_MS, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Actor> actors = world.getActors();
@@ -119,19 +116,13 @@ public class SimulationPanel extends JPanel {
 
         if (preyCount == 0 && predatorCount > 0) {
             winnerMessage = "Predators Win!";
-            gameOver = true;
+            paused = true;
         } else if (predatorCount == 0 && preyCount > 0) {
             winnerMessage = "Prey Wins!";
-            gameOver = true;
+            paused = true;
         } else if (predatorCount == 0 && preyCount == 0) {
             winnerMessage = "Everyone Died!";
-            gameOver = true;
-        }
-
-        if (gameOver) {
-            logicTimer.stop();
-            renderTimer.stop();
-            repaint();
+            paused = true;
         }
     }
 
@@ -217,20 +208,15 @@ public class SimulationPanel extends JPanel {
         g.drawString("Predators: " + predatorCount, 10, 15);
         g.drawString("Prey: " + preyCount, 10, 30);
 
-        if (paused) {
-            g.drawString("PAUSED", 10, 45);
-        }
-
-        if (gameOver) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(0, 0, 0, 150));
-            g2d.fillRect(0, 0, getWidth(), getHeight());
-
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 36f));
-            FontMetrics metrics = g2d.getFontMetrics();
+        if (winnerMessage != null) {
+            Font originalFont = g.getFont();
+            g.setFont(originalFont.deriveFont(Font.BOLD, 48f));
+            FontMetrics metrics = g.getFontMetrics();
             int textWidth = metrics.stringWidth(winnerMessage);
-            g2d.drawString(winnerMessage, (getWidth() - textWidth) / 2, getHeight() / 2);
+            g.drawString(winnerMessage, (getWidth() - textWidth) / 2, getHeight() / 2);
+            g.setFont(originalFont);
+        } else if (paused) {
+            g.drawString("PAUSED", 10, 45);
         }
     }
 }
