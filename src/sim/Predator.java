@@ -92,8 +92,8 @@ public class Predator extends Actor {
     @Override
 
     public void draw(Graphics g) {
-        int size = World.ACTOR_SIZE;
-        int centerOffset = (World.ACTOR_SIZE - World.CELL_SIZE) / 2;
+        int size = World.PREDATOR_ACTOR_SIZE;
+        int centerOffset = (World.PREDATOR_ACTOR_SIZE - World.CELL_SIZE) / 2;
         int px = (int) (getDrawX() * World.CELL_SIZE) - centerOffset;
         int py = (int) (getDrawY() * World.CELL_SIZE) - centerOffset;
 
