@@ -1,7 +1,8 @@
 package sim;
-import java.util.List;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 import java.util.Optional;
 
 public class Predator extends Actor {
@@ -12,6 +13,7 @@ public class Predator extends Actor {
     private static final int BREED_INTERVAL = 60;
     private static final int OFFSPRING_ENERGY = 60;
     private static final int MAX_PREDATOR_POPULATION = 10;
+
     private int ticksUntilBreed = BREED_INTERVAL;
 
     public Predator(World world, int x, int y, int startingEnergy) {
@@ -23,13 +25,31 @@ public class Predator extends Actor {
         changeEnergy(-ENERGY_LOSS_PER_TICK);
         if (!isAlive()) {
             return;
-            ticksUntilBreed--;
-            if (ticksUntilBreed <= 0) {
-                breed();
-                ticksUntilBreed = BREED_INTERVAL;
+        }
+
+        Optional<Prey> nearestPrey = world.findNearest(getX(), getY(), Prey.class, VISION_RADIUS);
+
+        if (nearestPrey.isPresent()) {
+            Prey prey = nearestPrey.get();
+            if (Math.abs(getX() - prey.getX()) <= 1 && Math.abs(getY() - prey.getY()) <= 1) {
+                prey.changeEnergy(-prey.getEnergy());
+                changeEnergy(ENERGY_PER_MEAL);
+            } else {
+                int dx = prey.getX() - getX();
+                int dy = prey.getY() - getY();
+                moveTo(getX() + Integer.signum(dx), getY() + Integer.signum(dy));
             }
+        } else {
+            wander();
         }
+
+        ticksUntilBreed--;
+        if (ticksUntilBreed <= 0) {
+            breed();
+            ticksUntilBreed = BREED_INTERVAL;
         }
+    }
+
     private void breed() {
         if (countPredators() >= MAX_PREDATOR_POPULATION) {
             return;
@@ -54,28 +74,11 @@ public class Predator extends Actor {
         return count;
     }
 
-        Optional<Prey> nearestPrey = world.findNearest(getX(), getY(), Prey.class, VISION_RADIUS);
-
-        if (nearestPrey.isPresent()) {
-            Prey prey = nearestPrey.get();
-            if (Math.abs(getX() - prey.getX()) <= 1 && Math.abs(getY() - prey.getY()) <= 1) {
-                prey.changeEnergy(-prey.getEnergy());
-                changeEnergy(ENERGY_PER_MEAL);
-            } else {
-                int dx = prey.getX() - getX();
-                int dy = prey.getY() - getY();
-                moveTo(getX() + Integer.signum(dx), getY() + Integer.signum(dy));
-            }
-        } else {
-            wander();
-        }
-    }
-
     @Override
     public void draw(Graphics g) {
         int size = World.CELL_SIZE;
-        int px = (int) (getDrawX() * size);
-        int py = (int) (getDrawY() * size);
+        int px = getX() * size;
+        int py = getY() * size;
 
         g.setColor(Color.RED);
         g.fillOval(px, py, size, size);
