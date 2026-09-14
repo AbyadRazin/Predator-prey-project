@@ -38,6 +38,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spawnRandom(world, true);
+                simulationPanel.requestFocusInWindow();
             }
         });
 
@@ -48,6 +49,7 @@ public class Main {
                 for (int i = 0; i < 5; i++) {
                     spawnRandom(world, false);
                 }
+                simulationPanel.requestFocusInWindow();
             }
         });
 
@@ -66,6 +68,10 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        // Buttons steal keyboard focus when clicked, and a focused button
+        // eats the spacebar before the panel's pause binding sees it, so
+        // hand focus back to the simulation panel right after showing it.
+        simulationPanel.requestFocusInWindow();
 
         // Restarting just closes this window and builds a brand new one from
         // scratch, so it works whether the game is still running or already over,

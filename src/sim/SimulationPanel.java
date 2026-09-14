@@ -67,6 +67,10 @@ public class SimulationPanel extends JPanel {
         int panelWidth = world.getWidth() * World.CELL_SIZE;
         int panelHeight = world.getHeight() * World.CELL_SIZE;
         setPreferredSize(new Dimension(panelWidth, panelHeight));
+        // JPanel isn't focusable by default, and a focused JButton eats the
+        // spacebar before our own key binding ever sees it, so make this
+        // panel able to hold keyboard focus itself.
+        setFocusable(true);
 
         for (int i = 0; i < BUBBLE_COUNT; i++) {
             bubbles.add(new Bubble(panelWidth, panelHeight, world.getRandom()));
